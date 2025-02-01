@@ -21,6 +21,12 @@ const gallery = document.querySelector('.gallery-list');
 const loadMoreBtn = document.querySelector('.load-more-btn');
 const pageLoader = document.querySelector('.loader');
 
+const lightbox = new SimpleLightbox('.gallery-list a', {
+    captionSelector: 'img',
+    captionsData: 'alt',
+    captionDelay: 250,
+});
+
 //* Function variables 
 let userQuery;
 let page = 1;
@@ -55,7 +61,7 @@ const onFormSubmit = async event => {
     if (totalPages <= 1) {
         return;
     }
-    else if (page <= totalPages) {
+    
         if (page === totalPages) {
                 loadMoreBtn.classList.add('is-hidden');
                 return;
@@ -63,7 +69,7 @@ const onFormSubmit = async event => {
 
         loadMoreBtn.classList.remove('is-hidden');
         loadMoreBtn.addEventListener('click', onLoadMoreClick);
-    }
+    
 }
 
 //* On load-more-button click function
@@ -86,18 +92,14 @@ const onLoadMoreClick = async event => {
             });
 
             loadMoreBtn.classList.add('is-hidden');
-            loadMoreBtn.removeEventListener('click', onLoadMoreClick);
+          
         }
 
         const galleryTemplate = data.hits.map(el => renderGallery(el)).join('');
 
         gallery.insertAdjacentHTML('beforeend', galleryTemplate);
 
-        const lightbox = new SimpleLightbox('.gallery-list a', {
-            captionSelector: 'img',
-            captionsData: 'alt',
-            captionDelay: 250,
-        });
+     
 
         const galleryItem = document.querySelector('.gallery-item');
         const rect = galleryItem.getBoundingClientRect()
